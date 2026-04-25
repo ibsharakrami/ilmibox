@@ -30,9 +30,8 @@ const steps = [
     description: "Your order is carefully packed and dispatched.",
     color: "bg-violet-500",
     icon: (
-      <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />
-        <path d="M3 10l9 6 9-6" />
+      <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
       </svg>
     ),
   },
@@ -42,11 +41,8 @@ const steps = [
     description: "Receive your Yamani Laptop at your doorstep.",
     color: "bg-green-500",
     icon: (
-      <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 12h18" />
-        <path d="M5 12l1.5 4.5H8l1.5-4.5" />
-        <path d="M16 12l1.5 4.5H18.5L20 12" />
-        <path d="M16 16h3" />
+      <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18 18.5a1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5 1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5m1.5-9l1.96 2.5H17V9.5m-11 9a1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5 1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5M5 8h12v8H5V8m17-4h-3V3H5v1H2v2h1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7h1V4z" />
       </svg>
     ),
   },

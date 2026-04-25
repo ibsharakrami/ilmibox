@@ -1,9 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
+import { useLocationPricing } from "@/hooks/useLocationPricing";
 
 const Contact = () => {
-  const [hasMounted, setHasMounted] = React.useState(false);
+  const [hasMounted, setHasMounted] = React.useState(false)
+  const pricing = useLocationPricing(2400, 99)
+
+  const displayPrice = pricing.isIndia ? '₹2,400' : 'AED 99'
+
   React.useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -61,8 +66,24 @@ const Contact = () => {
                       Phone / WhatsApp
                     </h3>
                     <p className="text-slate-600">
-                      +91 70225 50068 (India)<br />
-                      +971 52 456 9983 (UAE)
+                      <a 
+                        href="https://wa.me/917022550068?text=Hi%2C%20I%20saw%20the%20Yamani%20Islamic%20Learning%20Laptop%20for%20Kids%20with%2050%2B%20activities.%0A%0AI%20would%20like%20to%20place%20an%20order.%20Is%20it%20available%20for%20delivery%3F%0A%0APlease%20assist.%20Thank%20you%21"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-emerald-600 transition-colors"
+                      >
+                        +91 70225 50068
+                      </a>
+                      {" "}(India)<br />
+                      <a 
+                        href="https://wa.me/971524569983?text=Hi%2C%20I%20saw%20the%20Yamani%20Islamic%20Learning%20Laptop%20for%20Kids%20with%2050%2B%20activities.%0A%0AI%20would%20like%20to%20place%20an%20order.%20Is%20it%20available%20for%20delivery%3F%0A%0APlease%20assist.%20Thank%20you%21"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-emerald-600 transition-colors"
+                      >
+                        +971 52 456 9983
+                      </a>
+                      {" "}(UAE)
                     </p>
                   </div>
                 </div>
@@ -170,7 +191,7 @@ const Contact = () => {
                     <svg className="h-5 w-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span>Price: ₹2,400</span>
+                    <span>Price: {displayPrice}</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <svg className="h-5 w-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -189,7 +210,9 @@ const Contact = () => {
 
               {/* WhatsApp Button */}
               <a
-                href="https://wa.me/971XXXXXXXXX"
+                href="https://wa.me/971524569983?text=Hi%2C%20I%20saw%20the%20Yamani%20Islamic%20Learning%20Laptop%20for%20Kids%20with%2050%2B%20activities.%0A%0AI%20would%20like%20to%20place%20an%20order.%20Is%20it%20available%20for%20delivery%3F%0A%0APlease%20assist.%20Thank%20you%21"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-emerald-500 px-8 py-4 text-lg font-bold text-white transition-all duration-300 hover:bg-emerald-600 hover:shadow-lg"
               >
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

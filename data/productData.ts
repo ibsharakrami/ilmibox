@@ -2,9 +2,14 @@ export const laptopProduct = {
   id: '1',
   name: 'Yamani Laptop',
   description: 'Experience the perfect blend of performance and portability with our premium Yamani Laptop. Designed for professionals and students alike, this laptop delivers exceptional power in a sleek, lightweight package.',
-  price: 99,
-  originalPrice: 120,
-  savings: 21,
+  // India pricing
+  priceIndia: 2400,
+  originalPriceIndia: 2999,
+  savingsIndia: 599,
+  // International pricing (AED)
+  priceInternational: 99,
+  originalPriceInternational: 120,
+  savingsInternational: 21,
   features: [
     'High-performance Intel Core i5 processor',
     '16GB RAM for smooth multitasking',
