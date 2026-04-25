@@ -13,6 +13,7 @@ import Contact from "@/components/Contact";
 import Blog from "@/components/Blog";
 import Testimonial from "@/components/Testimonial";
 import ProductDisplay from "@/components/ProductDisplay";
+import OrderSteps from "@/components/OrderSteps";
 import { laptopProduct } from "@/data/productData";
 
 export const metadata: Metadata = {
@@ -27,11 +28,12 @@ export default function Home() {
     <main>
       <Hero />
       {/* <Brands /> */}
-        <ProductDisplay product={laptopProduct} />
+      <ProductDisplay product={laptopProduct} />
+      <OrderSteps />
       <Feature />
       {/* <About /> */}
-      <FeaturesTab />
-      <FunFact />
+      {/* <FeaturesTab /> */}
+      {/* <FunFact /> */}
       {/* <Integration /> */}
       {/* <CTA />
       <FAQ /> */}

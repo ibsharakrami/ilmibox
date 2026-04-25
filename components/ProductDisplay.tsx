@@ -28,7 +28,7 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
   }
 
   return (
-    <div id="product" className="container mx-auto px-18 py-8">
+    <div id="product" className="container mx-auto lg:px-18 py-8 px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
         {/* Left side - Image Gallery */}
         <div className="space-y-6">
