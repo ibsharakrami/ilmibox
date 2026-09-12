@@ -1,7 +1,6 @@
 "use client";
 import { Blog } from "@/types/blog";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 
 const BlogItem = ({ blog }: { blog: Blog }) => {
@@ -28,7 +27,7 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
         className="animate_top rounded-lg bg-white p-4 pb-9 shadow-solid-8 dark:bg-blacksection"
       >
         <Link href={`/blog/`} className="relative block aspect-368/239">
-          <Image src={mainImage} alt={title} fill />
+          <img src={mainImage} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </Link>
 
         <div className="px-4">

@@ -1,6 +1,5 @@
 import React from "react";
 import { FeatureTab } from "@/types/featureTab";
-import Image from "next/image";
 
 const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
   const { title, desc1, desc2, image, imageDark } = featureTab;
@@ -16,12 +15,12 @@ const FeaturesTabItem = ({ featureTab }: { featureTab: FeatureTab }) => {
           <p className="w-11/12">{desc2}</p>
         </div>
         <div className="relative mx-auto hidden aspect-562/366 max-w-[550px] md:block md:w-1/2">
-          <Image src={image} alt={title} fill className="dark:hidden" />
-          <Image
+          <img src={image} alt={title} className="dark:hidden" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img
             src={imageDark}
             alt={title}
-            fill
             className="hidden dark:block"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </div>
       </div>

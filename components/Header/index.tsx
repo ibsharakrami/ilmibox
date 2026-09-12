@@ -1,156 +1,110 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [dropdownToggler, setDropdownToggler] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
 
-  const pathUrl = usePathname();
-
-  // Sticky menu
   const handleStickyMenu = () => {
-    if (window.scrollY >= 80) {
-      setStickyMenu(true);
-    } else {
-      setStickyMenu(false);
-    }
+    setStickyMenu(window.scrollY >= 80);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", handleStickyMenu);
-  });
+    return () => window.removeEventListener("scroll", handleStickyMenu);
+  }, []);
 
   return (
     <header
-      className={`fixed left-0 top-0 z-99999 bg-slate-900  w-full py-7 ${
+      className={`fixed inset-x-0 top-0 z-50 w-full transition-all duration-300 ${
         stickyMenu
-          ? "bg-gradient-to-b  py-4! shadow-sm transition duration-100 "
-          : ""
+          ? "bg-slate-950/95 shadow-lg backdrop-blur-xl py-4"
+          : "bg-transparent py-6"
       }`}
     >
-      <div className="relative mx-auto max-w-c-1390 items-center justify-between px-4 md:px-8 xl:flex 2xl:px-0">
-        <div className="flex w-full items-center justify-between xl:w-1/4">
-          <a href="/">
-            <div className="text-white px-4 py-2 rounded-lg font-bold text-3xl">
-              ilmi<span className="text-amber-400">box</span>
-            </div>
-          </a>
+      <div className="mx-auto flex max-w-c-1390 items-center justify-between px-4 md:px-8 2xl:px-0">
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/images/deen/logo.png"
+            alt="Ilmi Box Logo"
+            width={40}
+            height={20}
+            className="h-12 w-auto"
+          />
+        </Link>
 
-          {/* <!-- Hamburger Toggle BTN --> */}
-          <button
-            aria-label="hamburger Toggler"
-            className="block xl:hidden"
-            onClick={() => setNavigationOpen(!navigationOpen)}
-          >
-            <span className="relative block h-5.5 w-5.5 cursor-pointer">
-              <span className="absolute right-0 block h-full w-full">
-                <span
-                  className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-white delay-0 duration-200 ease-in-out dark:bg-white ${
-                    !navigationOpen ? "w-full! delay-300" : "w-0"
-                  }`}
-                ></span>
-                <span
-                  className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-white delay-150 duration-200 ease-in-out dark:bg-white ${
-                    !navigationOpen ? "delay-400 w-full!" : "w-0"
-                  }`}
-                ></span>
-                <span
-                  className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-white delay-200 duration-200 ease-in-out dark:bg-white ${
-                    !navigationOpen ? "w-full! delay-500" : "w-0"
-                  }`}
-                ></span>
-              </span>
-              <span className="du-block absolute right-0 h-full w-full rotate-45">
-                <span
-                  className={`absolute left-2.5 top-0 block h-full w-0.5 rounded-sm bg-white delay-300 duration-200 ease-in-out dark:bg-white ${
-                    !navigationOpen ? "h-0! delay-0" : "h-full"
-                  }`}
-                ></span>
-                <span
-                  className={`delay-400 absolute left-0 top-2.5 block h-0.5 w-full rounded-sm bg-white duration-200 ease-in-out dark:bg-white ${
-                    !navigationOpen ? "h-0! delay-200" : "h-0.5"
-                  }`}
-                ></span>
-              </span>
-            </span>
-          </button>
-          {/* <!-- Hamburger Toggle BTN --> */}
-        </div>
-
-        {/* Nav Menu Start   */}
-        <div
-          className={`invisible h-0 w-full items-center justify-center xl:visible xl:flex xl:h-auto xl:w-full ${
-            navigationOpen &&
-            "navbar visible! mt-4 h-auto max-h-[400px] rounded-md bg-slate-900 p-7.5 shadow-solid-5 dark:bg-blacksection xl:h-auto xl:p-0 xl:shadow-none xl:dark:bg-transparent"
-          }`}
-        >
+        <div className="hidden items-center gap-8 xl:flex">
           <nav>
-            <ul className="flex flex-col gap-5 xl:flex-row xl:items-center xl:gap-10">
+            <ul className="flex items-center gap-8 text-sm font-medium text-slate-200">
               {menuData.map((menuItem, key) => (
-                <li key={key} className={menuItem.submenu && "group relative"}>
-                  {menuItem.submenu ? (
-                    <>
-                      <button
-                        onClick={() => setDropdownToggler(!dropdownToggler)}
-                        className="flex cursor-pointer items-center justify-between gap-3 hover:text-white"
-                      >
-                        {menuItem.title}
-                        <span>
-                          <svg
-                            className="h-3 w-3 cursor-pointer fill-waterloo group-hover:fill-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                          >
-                            <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                          </svg>
-                        </span>
-                      </button>
-
-                      <ul
-                        className={`dropdown ${dropdownToggler ? "flex" : ""}`}
-                      >
-                        {menuItem.submenu.map((item, key) => (
-                          <li key={key} className="hover:text-white">
-                            <Link href={item.path || "#"}>{item.title}</Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : (
-                    <Link
-                      href={`${menuItem.path}`}
-                      className={
-                        pathUrl === menuItem.path
-                          ? "text-white hover:text-white font-bold"
-                          : "hover:text-white"
-                      }
-                    >
-                      {menuItem.title}
-                    </Link>
-                  )}
+                <li key={key}>
+                  <Link
+                    href={menuItem.path ?? "/"}
+                    className="transition-colors duration-200 hover:text-white"
+                  >
+                    {menuItem.title}
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* <div className="mt-7 flex items-center gap-6 xl:mt-0">
-            <ThemeToggler />
-
-
-          </div> */}
+          <a
+            href="https://wa.me/971524569983?text=Hi%2C%20I%20saw%20the%20Yamani%20Islamic%20Learning%20Laptop%20for%20Kids%20with%2050%2B%20activities.%0A%0AI%20would%20like%20to%20place%20an%20order.%20Is%20it%20available%20for%20delivery%3F%0A%0APlease%20assist.%20Thank%20you%21"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-green-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+          >
+            Order Now
+          </a>
         </div>
+
+        <button
+          aria-label="Toggle navigation"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-600 text-white xl:hidden"
+          onClick={() => setNavigationOpen(!navigationOpen)}
+        >
+          <span className="block h-0.5 w-6 bg-white"></span>
+          <span className="mt-1 block h-0.5 w-6 bg-white"></span>
+          <span className="mt-1 block h-0.5 w-6 bg-white"></span>
+        </button>
+      </div>
+
+      <div
+        className={`xl:hidden ${navigationOpen ? "block" : "hidden"} border-t border-slate-700 bg-slate-950/95 px-4 pb-5 pt-6 backdrop-blur-xl`}
+      >
+        <nav>
+          <ul className="flex flex-col gap-4 text-sm font-medium text-slate-200">
+            {menuData.map((menuItem, key) => (
+              <li key={key}>
+                <Link
+                  href={menuItem.path ?? "/"}
+                  className="block rounded-3xl px-4 py-3 transition hover:bg-slate-900 hover:text-white"
+                  onClick={() => setNavigationOpen(false)}
+                >
+                  {menuItem.title}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <a
+                href="https://wa.me/971524569983?text=Hi%2C%20I%20saw%20the%20Yamani%20Islamic%20Learning%20Laptop%20for%20Kids%20with%2050%2B%20activities.%0A%0AI%20would%20like%20to%20place%20an%20order.%20Is%20it%20available%20for%20delivery%3F%0A%0APlease%20assist.%20Thank%20you%21"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-full bg-green-500 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-emerald-400"
+                onClick={() => setNavigationOpen(false)}
+              >
+                Order Now
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );
 };
-
-// w-full delay-300
 
 export default Header;

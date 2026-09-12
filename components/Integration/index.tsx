@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import SectionHeader from "../Common/SectionHeader";
 
 const Integration = () => {
@@ -22,7 +21,7 @@ const Integration = () => {
 
         <div className="pattern-dots pattern-blue-500 pattern-bg-white pattern-size-4 pattern-opacity-10 relative z-50 mx-auto mt-15 max-w-c-1154 px-4 md:px-8 xl:mt-20 xl:px-0">
           <div className="absolute -top-3/4 left-0 right-0 -z-1 mx-auto h-full w-full">
-            <Image
+            <img
               width={1200}
               height={400}
               sizes="(max-width: 768px) 100vw"
@@ -31,11 +30,11 @@ const Integration = () => {
               className="dark:hidden"
               style={{ position: "static" }}
             />
-            <Image
-              fill
+            <img
               src="/images/shape/shape-dotted-dark.svg"
               alt="Dotted"
               className="hidden dark:block"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
           <div className="flex flex-wrap justify-around gap-y-10">
@@ -58,7 +57,7 @@ const Integration = () => {
               className="animate_top w-1/6"
             >
               <div className="inline-block rounded-[10px] bg-white p-4.5 shadow-solid-7 dark:bg-btndark">
-                <Image
+                <img
                   width={50}
                   height={50}
                   src="./images/brand/brand-07.svg"
@@ -105,7 +104,7 @@ const Integration = () => {
               className="animate_top w-1/6"
             >
               <div className="inline-block rounded-[10px] bg-white p-4.5 shadow-solid-7 dark:bg-btndark">
-                <Image
+                <img
                   width={50}
                   height={50}
                   src="./images/brand/brand-08.svg"
@@ -154,7 +153,7 @@ const Integration = () => {
               className="animate_top w-1/6"
             >
               <div className="inline-block rounded-[10px] bg-white p-4.5 shadow-solid-7 dark:bg-btndark">
-                <Image
+                <img
                   width={50}
                   height={50}
                   src="./images/brand/brand-09.svg"
@@ -222,7 +221,7 @@ const Integration = () => {
               className="animate_top w-1/6"
             >
               <div className="inline-block rounded-[10px] bg-white p-4.5 shadow-solid-7 dark:bg-btndark">
-                <Image
+                <img
                   width={50}
                   height={50}
                   src="./images/brand/brand-10.svg"
@@ -271,7 +270,7 @@ const Integration = () => {
               className="animate_top w-1/6"
             >
               <div className="inline-block rounded-[10px] bg-white p-4.5 shadow-solid-7 dark:bg-btndark">
-                <Image
+                <img
                   width={50}
                   height={50}
                   src="./images/brand/brand-11.svg"
@@ -320,7 +319,7 @@ const Integration = () => {
               className="animate_top w-1/6"
             >
               <div className="inline-block rounded-[10px] bg-white p-4.5 shadow-solid-7 dark:bg-btndark">
-                <Image
+                <img
                   width={50}
                   height={50}
                   src="./images/brand/brand-12.svg"

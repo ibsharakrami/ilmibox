@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import SectionHeader from "../Common/SectionHeader";
 
 const Pricing = () => {
@@ -23,11 +22,11 @@ const Pricing = () => {
 
         <div className="relative mx-auto mt-15 max-w-[1207px] px-4 md:px-8 xl:mt-20 xl:px-0">
           <div className="absolute -bottom-15 -z-1 h-full w-full">
-            <Image
-              fill
+            <img
               src="./images/shape/shape-dotted-light.svg"
               alt="Dotted"
               className="dark:hidden"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
           <div className="flex flex-wrap justify-center gap-7.5 lg:flex-nowrap xl:gap-12.5">

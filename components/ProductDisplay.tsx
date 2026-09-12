@@ -1,33 +1,26 @@
 'use client'
 
 import React, { useState } from 'react'
-import Image from 'next/image'
+import Link from 'next/link'
 import { useLocationPricing } from '@/hooks/useLocationPricing'
+import { whatsappLink, type Product } from '@/data/productData'
 
 interface ProductDisplayProps {
-  product: {
-    id: string
-    name: string
-    description: string
-    priceIndia: number
-    originalPriceIndia: number
-    savingsIndia: number
-    priceInternational: number
-    originalPriceInternational: number
-    savingsInternational: number
-    features: string[]
-    images: string[]
-  }
+  product: Product
+  /** Anchor id for the section. Defaults to the product slug. */
+  sectionId?: string
+  /** When set, renders a secondary link to the product's own page. */
+  detailsHref?: string
 }
 
-export default function ProductDisplay({ product }: ProductDisplayProps) {
+export default function ProductDisplay({ product, sectionId, detailsHref }: ProductDisplayProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const pricing = useLocationPricing(product.priceIndia, product.priceInternational)
+  const pricing = useLocationPricing(product.priceIndia, product.priceInternational, product.priceUS)
 
-  const currentPrice = pricing.isIndia ? product.priceIndia : product.priceInternational
-  const originalPrice = pricing.isIndia ? product.originalPriceIndia : product.originalPriceInternational
-  const savings = pricing.isIndia ? product.savingsIndia : product.savingsInternational
-  const currencySymbol = pricing.isIndia ? '₹' : 'AED '
+  const currentPrice = pricing.isIndia ? product.priceIndia : pricing.isUS ? product.priceUS : product.priceInternational
+  const originalPrice = pricing.isIndia ? product.originalPriceIndia : pricing.isUS ? product.originalPriceUS : product.originalPriceInternational
+  const savings = pricing.isIndia ? product.savingsIndia : pricing.isUS ? product.savingsUS : product.savingsInternational
+  const currencySymbol = pricing.isIndia ? '₹' : pricing.isUS ? '$' : 'AED '
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % product.images.length)
@@ -38,19 +31,18 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
   }
 
   return (
-    <div id="product" className="container mx-auto lg:px-18 py-8 px-8">
+    <div id={sectionId ?? product.slug} className="container mx-auto lg:px-18 py-8 px-8 scroll-mt-28">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
         {/* Left side - Image Gallery */}
         <div className="space-y-6">
           {/* Main Image */}
           <div className="relative">
             <div className="mx-auto rounded-lg overflow-hidden flex items-center justify-center">
-              <Image
+              <img
                 src={product.images[currentImageIndex]}
                 alt={product.name}
-                width={500}
-                height={500}
                 className="object-contain"
+                style={{ maxWidth: '500px', maxHeight: '500px' }}
               />
             </div>
             
@@ -76,7 +68,10 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
           </div>
 
           {/* Thumbnail Images */}
-          <div className="grid grid-cols-4 gap-2">
+          <div
+            className="grid gap-2"
+            style={{ gridTemplateColumns: `repeat(${Math.min(product.images.length, 5)}, minmax(0, 1fr))` }}
+          >
             {product.images.map((image, index) => (
               <button
                 key={index}
@@ -87,11 +82,9 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <Image
+                <img
                   src={image}
                   alt={`${product.name} - Image ${index + 1}`}
-                  width={150}
-                  height={150}
                   className="w-full h-full object-cover"
                 />
               </button>
@@ -102,12 +95,40 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
         {/* Right side - Product Details */}
         <div className="space-y-6">
           {/* Product Title */}
-          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+            <p className="mt-2 text-lg text-gray-500">{product.tagline}</p>
+          </div>
 
           {/* Description */}
           <p className="text-gray-600 leading-relaxed">
             {product.description}
           </p>
+
+          {/* Editions */}
+          {product.editions && product.editions.length > 0 && (
+            <div className="space-y-3">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                Choose your edition
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {product.editions.map((edition) => (
+                  <div
+                    key={edition.name}
+                    className="rounded-xl border border-gray-200 p-4 transition-colors hover:border-green-400"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span className={`h-3 w-3 rounded-full ${edition.accent}`} />
+                      <span className="font-semibold text-gray-900">{edition.name}</span>
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-gray-600">
+                      {edition.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Features */}
           <div className="space-y-3">
@@ -162,7 +183,7 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
 
           {/* CTA Button */}
           <a 
-            href="https://wa.me/971524569983?text=Hi%2C%20I%20saw%20the%20Yamani%20Islamic%20Learning%20Laptop%20for%20Kids%20with%2050%2B%20activities.%0A%0AI%20would%20like%20to%20place%20an%20order.%20Is%20it%20available%20for%20delivery%3F%0A%0APlease%20assist.%20Thank%20you%21"
+            href={whatsappLink(product.whatsappMessage)}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
@@ -172,6 +193,16 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
             </svg>
             <span>Order Now on WhatsApp</span>
           </a>
+
+          {/* Link to the dedicated product page */}
+          {detailsHref && (
+            <Link
+              href={detailsHref}
+              className="block w-full rounded-lg border border-gray-300 py-4 px-6 text-center font-semibold text-gray-900 transition-colors duration-200 hover:border-gray-900"
+            >
+              View Full Details
+            </Link>
+          )}
         </div>
       </div>
     </div>

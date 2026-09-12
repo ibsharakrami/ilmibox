@@ -38,7 +38,7 @@ const steps = [
   {
     id: 4,
     title: "Delivered!",
-    description: "Receive your Yamani Laptop at your doorstep.",
+    description: "Receive your order at your doorstep, carefully packed.",
     color: "bg-green-500",
     icon: (
       <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,11 @@ const steps = [
   },
 ]
 
-export default function OrderSteps() {
+export default function OrderSteps({
+  productName = "order",
+}: {
+  productName?: string
+}) {
   return (
     <section className="bg-slate-50 py-20">
       <div className="container mx-auto px-16">
@@ -60,7 +64,7 @@ export default function OrderSteps() {
             How to Order
           </h2>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            Order your Yamani Laptop in just 4 simple steps via WhatsApp.
+            Order your {productName} in just 4 simple steps via WhatsApp.
           </p>
         </div>
 

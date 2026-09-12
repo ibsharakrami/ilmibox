@@ -14,7 +14,8 @@ import Blog from "@/components/Blog";
 import Testimonial from "@/components/Testimonial";
 import ProductDisplay from "@/components/ProductDisplay";
 import OrderSteps from "@/components/OrderSteps";
-import { laptopProduct } from "@/data/productData";
+import WhyIlmiBox from "@/components/WhyIlmiBox";
+import { laptopProduct, quranAudioMagnet } from "@/data/productData";
 
 export const metadata: Metadata = {
   title: "Yamani Islamic Learning Laptop for Kids",
@@ -28,18 +29,37 @@ export default function Home() {
     <main>
       <Hero />
       {/* <Brands /> */}
-      <ProductDisplay product={laptopProduct} />
+
+      <section id="products" className="scroll-mt-28">
+        <ProductDisplay
+          product={laptopProduct}
+          sectionId="product"
+          detailsHref={`/products/${laptopProduct.slug}`}
+        />
+
+        <div className="container mx-auto px-8 lg:px-18">
+          <hr className="my-10 border-gray-200" />
+        </div>
+
+        <ProductDisplay
+          product={quranAudioMagnet}
+          sectionId="quran-audio-magnet"
+          detailsHref={`/products/${quranAudioMagnet.slug}`}
+        />
+      </section>
+
+      <WhyIlmiBox />
       <OrderSteps />
       <Feature />
       {/* <About /> */}
       {/* <FeaturesTab /> */}
       {/* <FunFact /> */}
       {/* <Integration /> */}
-      {/* <CTA />
-      <FAQ /> */}
+      {/* <CTA /> */}
       <Testimonial />
+      <FAQ />
       {/* <Pricing /> */}
-    
+
       <Contact />
       {/* <Blog /> */}
     </main>

@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 const About = () => {
   return (
@@ -28,17 +27,17 @@ const About = () => {
               viewport={{ once: true }}
               className="animate_left relative mx-auto hidden aspect-[588/526.5] md:block md:w-1/2"
             >
-              <Image
+              <img
                 src="/images/about/about-light-01.png"
                 alt="About"
                 className="dark:hidden"
-                fill
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-              <Image
+              <img
                 src="/images/about/about-dark-01.png"
                 alt="About"
                 className="hidden dark:block"
-                fill
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </motion.div>
             <motion.div
@@ -180,17 +179,17 @@ const About = () => {
               viewport={{ once: true }}
               className="animate_right relative mx-auto hidden aspect-[588/526.5] md:block md:w-1/2"
             >
-              <Image
+              <img
                 src="./images/about/about-light-02.svg"
                 alt="About"
                 className="dark:hidden"
-                fill
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-              <Image
+              <img
                 src="./images/about/about-dark-02.svg"
                 alt="About"
                 className="hidden dark:block"
-                fill
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </motion.div>
           </div>

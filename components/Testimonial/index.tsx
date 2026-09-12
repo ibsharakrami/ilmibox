@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 const Testimonial = () => {
@@ -42,11 +41,11 @@ const Testimonial = () => {
               </span>
             </div>
             <div className="relative h-80 sm:h-[420px]">
-              <Image
+              <img
                 src="/images/deen/child1.jpeg"
                 alt="Child enjoying Yamani laptop"
-                fill
                 className="object-cover"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -62,11 +61,11 @@ const Testimonial = () => {
               </span>
             </div>
             <div className="relative h-80 sm:h-[420px]">
-              <Image
+              <img
                 src="/images/deen/child2.jpg"
                 alt="Child using laptop at home"
-                fill
                 className="object-cover"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           </div>

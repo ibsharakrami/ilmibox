@@ -1,3 +1,5 @@
+import { ChevronDown } from "lucide-react";
+
 type FaqData = {
   activeFaq: number;
   id: number;
@@ -8,55 +10,43 @@ type FaqData = {
 
 const FAQItem = ({ faqData }: { faqData: FaqData }) => {
   const { activeFaq, id, handleFaqToggle, quest, ans } = faqData;
+  const isOpen = activeFaq === id;
 
   return (
-    <>
-      <div className="flex flex-col border-b border-stroke last-of-type:border-none dark:border-strokedark">
-        <button
-          onClick={() => {
-            handleFaqToggle(id);
-          }}
-          className="flex cursor-pointer items-center justify-between px-6 py-5 text-metatitle3 font-medium text-black dark:text-white lg:px-9 lg:py-7.5"
-        >
-          {quest}
-
-          {activeFaq === id ? (
-            <svg
-              width="18"
-              height="4"
-              viewBox="0 0 18 4"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.1666 0.833374H10.1666H7.83331H0.833313V3.16671H7.83331H10.1666H17.1666V0.833374Z"
-                fill="currentColor"
-              />
-            </svg>
-          ) : (
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.83331 7.83337V0.833374H10.1666V7.83337H17.1666V10.1667H10.1666V17.1667H7.83331V10.1667H0.833313V7.83337H7.83331Z"
-                fill="currentColor"
-              />
-            </svg>
-          )}
-        </button>
-        <p
-          className={`border-t border-stroke px-6 py-5 dark:border-strokedark lg:px-9 lg:py-7.5 ${
-            activeFaq === id ? "block" : "hidden"
+    <div
+      className={`rounded-2xl border transition-colors duration-300 ${
+        isOpen
+          ? "border-emerald-300 bg-emerald-50/60"
+          : "border-slate-200 bg-white hover:border-slate-300"
+      }`}
+    >
+      <button
+        type="button"
+        onClick={() => handleFaqToggle(id)}
+        aria-expanded={isOpen}
+        aria-controls={`faq-answer-${id}`}
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-base font-semibold text-slate-900 md:text-lg"
+      >
+        <span>{quest}</span>
+        <ChevronDown
+          className={`h-5 w-5 flex-shrink-0 text-emerald-600 transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
           }`}
-        >
-          {ans}
-        </p>
+        />
+      </button>
+
+      {/* grid-rows trick gives a smooth height animation without measuring */}
+      <div
+        id={`faq-answer-${id}`}
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="px-6 pb-6 leading-7 text-slate-600">{ans}</p>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

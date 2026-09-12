@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
 import FeaturesTabItem from "./FeaturesTabItem";
 import featuresTabData from "./featuresTabData";
@@ -15,17 +14,17 @@ const FeaturesTab = () => {
       <section className="relative pb-20 pt-18.5 lg:pb-22.5">
         <div className="relative mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
           <div className="absolute -top-16 -z-1 mx-auto h-[350px] w-[90%]">
-            <Image
-              fill
+            <img
               className="dark:hidden"
               src="/images/shape/shape-dotted-light.svg"
               alt="Dotted Shape"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-            <Image
-              fill
+            <img
               className="hidden dark:block"
               src="/images/shape/shape-dotted-dark.svg"
               alt="Dotted Shape"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
 

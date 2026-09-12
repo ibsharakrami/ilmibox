@@ -2,85 +2,53 @@ import { Menu } from "@/types/menu";
 
 const menuData: Menu[] = [
   {
-    id: 1,
-    title: "Home",
-    newTab: false,
-    path: "/",
-  },
-  {
     id: 2,
     title: "Features",
     newTab: false,
     path: "/#features",
   },
-    {
+  {
     id: 3,
-    title: "Product",
+    title: "Products",
     newTab: false,
-    path: "/#product",
+    path: "/#products",
   },
-  // {
-  //   id: 2.1,
-  //   title: "Blog",
-  //   newTab: false,
-  //   path: "/blog",
-  // },
-  // {
-  //   id: 2.3,
-  //   title: "Docs",
-  //   newTab: false,
-  //   path: "/docs",
-  // },
-  // {
-  //   id: 3,
-  //   title: "Pages",
-  //   newTab: false,
-  //   submenu: [
-  //     {
-  //       id: 31,
-  //       title: "Blog Grid",
-  //       newTab: false,
-  //       path: "/blog",
-  //     },
-  //     {
-  //       id: 34,
-  //       title: "Sign In",
-  //       newTab: false,
-  //       path: "/auth/signin",
-  //     },
-  //     {
-  //       id: 35,
-  //       title: "Sign Up",
-  //       newTab: false,
-  //       path: "/auth/signup",
-  //     },
-  //     {
-  //       id: 35,
-  //       title: "Docs",
-  //       newTab: false,
-  //       path: "/docs",
-  //     },
-  //     {
-  //       id: 35.1,
-  //       title: "Support",
-  //       newTab: false,
-  //       path: "/support",
-  //     },
-  //     {
-  //       id: 36,
-  //       title: "404",
-  //       newTab: false,
-  //       path: "/error",
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   id: 4,
-  //   title: "Support",
-  //   newTab: false,
-  //   path: "/support",
-  // },
+  {
+    id: 4,
+    title: "Yamani Laptop",
+    newTab: false,
+    path: "/products/yamani-islamic-learning-laptop",
+  },
+  {
+    id: 5,
+    title: "Quran Audio Magnet",
+    newTab: false,
+    path: "/products/quran-audio-magnet",
+  },
+  {
+    id: 6,
+    title: "Why ilmiBox",
+    newTab: false,
+    path: "/#why",
+  },
+  {
+    id: 7,
+    title: "How to Order",
+    newTab: false,
+    path: "/#order",
+  },
+  {
+    id: 8,
+    title: "FAQ",
+    newTab: false,
+    path: "/#faq",
+  },
+  {
+    id: 9,
+    title: "Contact",
+    newTab: false,
+    path: "/#contact",
+  },
 ];
 
 export default menuData;

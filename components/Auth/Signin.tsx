@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -17,17 +16,17 @@ const Signin = () => {
         <div className="relative z-1 mx-auto max-w-c-1016 px-7.5 pb-7.5 pt-10 lg:px-15 lg:pt-15 xl:px-20 xl:pt-20">
           <div className="absolute left-0 top-0 -z-1 h-2/3 w-full rounded-lg bg-linear-to-t from-transparent to-[#dee7ff47] dark:bg-linear-to-t dark:to-[#252A42]"></div>
           <div className="absolute bottom-17.5 left-0 -z-1 h-1/3 w-full">
-            <Image
+            <img
               src="/images/shape/shape-dotted-light.svg"
               alt="Dotted"
               className="dark:hidden"
-              fill
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-            <Image
+            <img
               src="/images/shape/shape-dotted-dark.svg"
               alt="Dotted"
               className="hidden dark:block"
-              fill
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
 

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const Footer = () => {
@@ -27,11 +28,14 @@ const Footer = () => {
                 viewport={{ once: true }}
                 className="animate_top"
               >
-                <a href="/" className="relative mb-8 inline-block">
-                  <div className="text-4xl font-bold">
-                    <span className="text-white">ilmi</span>
-                    <span className="text-amber-400">box</span>
-                  </div>
+                <a href="/" className="relative  inline-block">
+                  <Image
+                    src="/images/deen/logo.png"
+                    alt="Ilmi Box Logo"
+                    width={20}
+                    height={20}
+                    className="h-20 w-auto"
+                  />
                 </a>
 
                 <p className="mb-8 max-w-2xl text-base leading-relaxed text-slate-300">
