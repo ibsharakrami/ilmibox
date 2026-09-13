@@ -10,6 +10,11 @@ export type ProductHighlight = {
   description: string
 }
 
+export type ProductDetail = {
+  label: string
+  value: string
+}
+
 export type Product = {
   id: string
   slug: string
@@ -22,6 +27,13 @@ export type Product = {
   shortDescription: string
   description: string
   badge?: string
+  sku: string
+  rating: number
+  reviewCount: number
+  /** Tailwind background class behind the gallery image and thumbnails. */
+  imageBg: string
+  /** Key/value rows shown under "Product details". */
+  details: ProductDetail[]
   // India pricing (INR)
   priceIndia: number
   originalPriceIndia: number
@@ -60,6 +72,16 @@ export const laptopProduct: Product = {
   description:
     'Experience the perfect blend of performance and portability with our premium Yamani Laptop. Designed for professionals and students alike, this laptop delivers exceptional power in a sleek, lightweight package.',
   badge: 'Best Seller',
+  sku: 'ILMI-YL-001',
+  rating: 4.8,
+  reviewCount: 267,
+  imageBg: 'bg-sky-100',
+  details: [
+    { label: 'Age', value: '3 years and above' },
+    { label: 'Content', value: '50+ activities — Surahs, Ahadith, Duas, nasheeds, Q&A' },
+    { label: 'Power', value: 'Battery operated (batteries included)' },
+    { label: 'Perfect for', value: 'Gifting, daily learning, Eid & birthdays' },
+  ],
   // India pricing
   priceIndia: 2400,
   originalPriceIndia: 2999,
@@ -121,6 +143,16 @@ export const quranAudioMagnet: Product = {
   description:
     'The Quran Audio Magnet turns any fridge, door or metal surface into a place of remembrance. Slim, elegant and beautifully finished with imagery of the Haramain, it plays the Quran at the touch of a button — so recitation flows through your home all day long. Choose the Makkah Edition or the Madinah Edition, each arriving in a premium gift box.',
   badge: 'New Arrival',
+  sku: 'ILMI-QAM-002',
+  rating: 4.9,
+  reviewCount: 84,
+  imageBg: 'bg-emerald-100',
+  details: [
+    { label: 'Editions', value: 'Makkah Edition, Madinah Edition' },
+    { label: 'Mount', value: 'Strong built-in magnet — fridge or any metal surface' },
+    { label: 'Power', value: 'Rechargeable (charging cable included)' },
+    { label: 'Perfect for', value: 'Kitchen, office, gifting, a new home' },
+  ],
   // India pricing
   priceIndia: 4500,
   originalPriceIndia: 6000,

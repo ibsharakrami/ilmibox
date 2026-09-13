@@ -1,62 +1,62 @@
+"use client";
+import {
+  MessageCircle,
+  ClipboardCheck,
+  PackageCheck,
+  Truck,
+  ArrowRight,
+} from "lucide-react";
+import Reveal from "@/components/Common/Reveal";
+import { whatsappLink } from "@/data/productData";
+
 const steps = [
   {
     id: 1,
     title: "Message on WhatsApp",
     description:
-      "Click the Order button and send us a message with your details.",
-    color: "bg-emerald-500",
-    icon: (
-      <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
+      "Tap the Order button and send us a message with the product you want.",
+    icon: MessageCircle,
+    tile: "bg-emerald-500 text-white shadow-emerald-500/30",
   },
   {
     id: 2,
-    title: "Confirm Order",
+    title: "Confirm Your Order",
     description:
-      "Share your address and choose payment method (COD/Online).",
-    color: "bg-blue-500",
-    icon: (
-      <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="5" width="20" height="14" rx="2" />
-        <path d="M2 9h20" />
-      </svg>
-    ),
+      "Share your delivery address and choose cash on delivery or online payment.",
+    icon: ClipboardCheck,
+    tile: "bg-sky-500 text-white shadow-sky-500/30",
   },
   {
     id: 3,
-    title: "We Process",
-    description: "Your order is carefully packed and dispatched.",
-    color: "bg-violet-500",
-    icon: (
-      <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-      </svg>
-    ),
+    title: "We Pack It",
+    description: "Your order is carefully packed and handed to the courier.",
+    icon: PackageCheck,
+    tile: "bg-violet-500 text-white shadow-violet-500/30",
   },
   {
     id: 4,
-    title: "Delivered!",
-    description: "Receive your order at your doorstep, carefully packed.",
-    color: "bg-green-500",
-    icon: (
-      <svg className="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M18 18.5a1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5 1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5m1.5-9l1.96 2.5H17V9.5m-11 9a1.5 1.5 0 0 1-1.5-1.5 1.5 1.5 0 0 1 1.5-1.5 1.5 1.5 0 0 1 1.5 1.5 1.5 1.5 0 0 1-1.5 1.5M5 8h12v8H5V8m17-4h-3V3H5v1H2v2h1v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7h1V4z" />
-      </svg>
-    ),
+    title: "Delivered to You",
+    description: "Receive your order at your doorstep and start learning.",
+    icon: Truck,
+    tile: "bg-amber-500 text-white shadow-amber-500/30",
   },
-]
+];
 
 export default function OrderSteps({
-  productName = "order",
+  productName,
 }: {
-  productName?: string
+  productName?: string;
 }) {
+  const subject = productName ? `your ${productName}` : "any ilmiBox product";
+  const message = productName
+    ? `Hi, I would like to order the ${productName}. Could you help me place the order?`
+    : "Hi, I would like to place an order. Could you help me get started?";
+
   return (
-    <section className="bg-slate-50 py-20">
-      <div className="container mx-auto px-16">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
+    <section id="how-to-order" className="scroll-mt-28 bg-slate-50 py-20">
+      <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
+        {/* Header */}
+        <Reveal direction="up" className="mx-auto mb-14 max-w-2xl text-center">
           <span className="inline-flex rounded-full bg-emerald-100 px-4 py-1 text-sm font-semibold text-emerald-700">
             Easy Process
           </span>
@@ -64,31 +64,81 @@ export default function OrderSteps({
             How to Order
           </h2>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            Order your {productName} in just 4 simple steps via WhatsApp.
+            Order {subject} in four simple steps, all over WhatsApp. No forms,
+            no sign-ups.
           </p>
+        </Reveal>
+
+        {/* Timeline */}
+        <div className="relative">
+          {/* connector line (desktop) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-8 hidden h-px border-t-2 border-dashed border-slate-300 lg:block"
+          />
+
+          <ol className="relative grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <Reveal
+                  as="li"
+                  key={step.id}
+                  direction="up"
+                  delay={0.12 * index}
+                  className="group relative flex flex-col items-start lg:items-center lg:text-center"
+                >
+                  {/* icon + number */}
+                  <div className="relative">
+                    <div
+                      className={`relative z-10 inline-flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg ring-8 ring-slate-50 transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-105 ${step.tile}`}
+                    >
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <span className="absolute -right-3 -top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white ring-4 ring-slate-50">
+                      {step.id}
+                    </span>
+                  </div>
+
+                  {/* text */}
+                  <div className="mt-6 rounded-[24px] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg lg:mt-8 lg:min-h-[168px] lg:w-full">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                      Step {step.id}
+                    </p>
+                    <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 leading-7 text-slate-600">
+                      {step.description}
+                    </p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </ol>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-          {steps.map((step) => (
-            <div
-              key={step.id}
-              className="group relative overflow-hidden rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="relative mb-8 inline-flex h-16 w-16 items-center justify-center rounded-3xl shadow-sm">
-                <div className={`${step.color} absolute inset-0 rounded-3xl`} />
-                <div className="relative z-10">{step.icon}</div>
-                <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white shadow-lg">
-                  {step.id}
-                </div>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                {step.title}
-              </h3>
-              <p className="text-slate-600 leading-7">{step.description}</p>
-            </div>
-          ))}
-        </div>
+        {/* CTA */}
+        <Reveal
+          direction="up"
+          delay={0.15}
+          className="mt-14 flex flex-col items-center gap-4 text-center"
+        >
+          <a
+            href={whatsappLink(message)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-green-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-green-500/25 transition hover:bg-green-600"
+          >
+            <MessageCircle className="h-5 w-5" />
+            Start your order on WhatsApp
+            <ArrowRight className="h-5 w-5" />
+          </a>
+          <p className="text-sm text-slate-500">
+            Cash on delivery available. Free delivery across the UAE and US.
+          </p>
+        </Reveal>
       </div>
     </section>
-  )
+  );
 }

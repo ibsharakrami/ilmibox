@@ -223,3 +223,9 @@ pre {
 .active-tab {
   @apply bg-stroke text-black dark:bg-blackho dark:text-white;
 }
+
+/* In-page scrolling is handled by GSAP ScrollSmoother (see components/Common/SmoothScroll.tsx).
+   Native smooth scroll-behavior would fight it, so it stays "auto". */
+html {
+  scroll-behavior: auto;
+}

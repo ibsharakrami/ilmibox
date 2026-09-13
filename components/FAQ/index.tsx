@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Common/Reveal";
 import FAQItem from "./FAQItem";
 import faqData from "./faqData";
 import { whatsappLink } from "@/data/productData";
@@ -18,13 +18,7 @@ const FAQ = () => {
   return (
     <section id="faq" className="scroll-mt-28 bg-white py-20">
       <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-          className="mx-auto mb-12 max-w-2xl text-center"
-        >
+        <Reveal direction="up" className="mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex rounded-full bg-sky-100 px-4 py-1 text-sm font-semibold text-sky-700">
             FAQ
           </span>
@@ -34,16 +28,14 @@ const FAQ = () => {
           <p className="mt-4 text-lg leading-8 text-slate-600">
             Everything about ordering, delivery, returns and the products themselves.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
           {columns.map((column, columnIndex) => (
-            <motion.div
+            <Reveal
               key={columnIndex}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 + columnIndex * 0.15 }}
+              direction="up"
+              delay={0.1 + columnIndex * 0.15}
               className="space-y-4"
             >
               {column.map((faq) => (
@@ -52,15 +44,14 @@ const FAQ = () => {
                   faqData={{ ...faq, activeFaq, handleFaqToggle }}
                 />
               ))}
-            </motion.div>
+            </Reveal>
           ))}
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+        <Reveal
+          as="p"
+          direction="none"
+          delay={0.3}
           className="mt-12 text-center text-slate-600"
         >
           Didn&apos;t find your answer?{" "}
@@ -73,7 +64,7 @@ const FAQ = () => {
             Ask us on WhatsApp
           </a>
           .
-        </motion.p>
+        </Reveal>
       </div>
     </section>
   );

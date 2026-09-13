@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Common/Reveal";
 import {
   ShieldCheck,
   Heart,
@@ -59,13 +59,7 @@ const WhyIlmiBox = () => {
   return (
     <section id="why" className="scroll-mt-28 bg-white py-20">
       <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-          className="mx-auto mb-12 max-w-2xl text-center"
-        >
+        <Reveal direction="up" className="mx-auto mb-12 max-w-2xl text-center">
           <span className="inline-flex rounded-full bg-emerald-100 px-4 py-1 text-sm font-semibold text-emerald-700">
             Why ilmiBox
           </span>
@@ -76,18 +70,16 @@ const WhyIlmiBox = () => {
             We build simple, beautiful products that make the Quran and Islamic
             knowledge part of everyday life — for kids, parents and grandparents.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {reasons.map((reason, index) => {
             const Icon = reason.icon;
             return (
-              <motion.div
+              <Reveal
                 key={reason.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.08 * index }}
+                direction="up"
+                delay={0.08 * index}
                 className="group rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
                 <div
@@ -99,16 +91,14 @@ const WhyIlmiBox = () => {
                   {reason.title}
                 </h3>
                 <p className="mt-3 leading-7 text-slate-600">{reason.description}</p>
-              </motion.div>
+              </Reveal>
             );
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1 }}
+        <Reveal
+          direction="up"
+          delay={0.1}
           className="mt-12 flex flex-col items-center justify-between gap-6 rounded-[28px] bg-slate-900 px-8 py-8 text-center md:flex-row md:text-left"
         >
           <div>
@@ -129,7 +119,7 @@ const WhyIlmiBox = () => {
           >
             💬 Chat on WhatsApp
           </a>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

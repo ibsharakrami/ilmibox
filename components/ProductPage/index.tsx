@@ -1,3 +1,5 @@
+"use client";
+import Reveal from "@/components/Common/Reveal";
 import Link from "next/link";
 import ProductDisplay from "@/components/ProductDisplay";
 import OrderSteps from "@/components/OrderSteps";
@@ -21,7 +23,7 @@ const ProductPage = ({ product }: { product: Product }) => {
             <span className="text-slate-200">{product.name}</span>
           </nav>
 
-          <div className="max-w-3xl">
+          <Reveal immediate direction="up" delay={0.1} className="max-w-3xl">
             {product.badge && (
               <span className="inline-flex rounded-full bg-emerald-500/20 px-4 py-1 text-sm font-semibold text-emerald-300">
                 {product.badge}
@@ -36,20 +38,26 @@ const ProductPage = ({ product }: { product: Product }) => {
             <p className="mt-5 text-lg leading-8 text-slate-300">
               {product.shortDescription}
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Gallery + details + pricing */}
-      <ProductDisplay product={product} />
+      <section className="bg-slate-100 py-12 lg:py-16">
+        <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
+          <ProductDisplay product={product} />
+        </div>
+      </section>
 
       {/* Highlights */}
       <section className="bg-slate-50 py-20">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="grid gap-6 md:grid-cols-3">
-            {product.highlights.map((highlight) => (
-              <div
+            {product.highlights.map((highlight, index) => (
+              <Reveal
                 key={highlight.title}
+                direction="up"
+                delay={0.1 * index}
                 className="rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm"
               >
                 <h3 className="text-xl font-semibold text-slate-900">
@@ -58,7 +66,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                 <p className="mt-3 leading-7 text-slate-600">
                   {highlight.description}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -68,19 +76,21 @@ const ProductPage = ({ product }: { product: Product }) => {
       {product.editions && product.editions.length > 0 && (
         <section className="py-20">
           <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="mx-auto mb-12 max-w-2xl text-center">
+            <Reveal direction="up" className="mx-auto mb-12 max-w-2xl text-center">
               <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
                 Available Editions
               </h2>
               <p className="mt-4 text-lg leading-8 text-slate-600">
                 Pick the edition that speaks to your heart — or collect both.
               </p>
-            </div>
+            </Reveal>
 
             <div className="grid gap-8 md:grid-cols-2">
-              {product.editions.map((edition) => (
-                <div
+              {product.editions.map((edition, index) => (
+                <Reveal
                   key={edition.name}
+                  direction="up"
+                  delay={0.12 * index}
                   className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm"
                 >
                   <div className="aspect-square bg-slate-50">
@@ -98,7 +108,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                       {edition.description}
                     </p>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -109,7 +119,7 @@ const ProductPage = ({ product }: { product: Product }) => {
       <section className="bg-slate-900 py-20">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <div>
+            <Reveal direction="left">
               <h2 className="text-3xl font-bold text-white sm:text-4xl">
                 What&apos;s in the Box
               </h2>
@@ -131,9 +141,13 @@ const ProductPage = ({ product }: { product: Product }) => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
 
-            <div className="rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur">
+            <Reveal
+              direction="right"
+              delay={0.1}
+              className="rounded-[28px] border border-white/10 bg-white/5 p-8 backdrop-blur"
+            >
               <h3 className="text-xl font-semibold text-white">
                 Ready to order {product.name}?
               </h3>
@@ -154,7 +168,7 @@ const ProductPage = ({ product }: { product: Product }) => {
                 <span>🟢 Safe Payment</span>
                 <span>🟢 Fast Delivery</span>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

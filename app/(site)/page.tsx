@@ -30,22 +30,20 @@ export default function Home() {
       <Hero />
       {/* <Brands /> */}
 
-      <section id="products" className="scroll-mt-28">
-        <ProductDisplay
-          product={laptopProduct}
-          sectionId="product"
-          detailsHref={`/products/${laptopProduct.slug}`}
-        />
+      <section id="products" className="scroll-mt-28 bg-slate-100 py-16 lg:py-20">
+        <div className="mx-auto max-w-c-1390 space-y-10 px-4 md:px-8 2xl:px-0">
+          <ProductDisplay
+            product={laptopProduct}
+            sectionId="product"
+            detailsHref={`/products/${laptopProduct.slug}`}
+          />
 
-        <div className="container mx-auto px-8 lg:px-18">
-          <hr className="my-10 border-gray-200" />
+          <ProductDisplay
+            product={quranAudioMagnet}
+            sectionId="quran-audio-magnet"
+            detailsHref={`/products/${quranAudioMagnet.slug}`}
+          />
         </div>
-
-        <ProductDisplay
-          product={quranAudioMagnet}
-          sectionId="quran-audio-magnet"
-          detailsHref={`/products/${quranAudioMagnet.slug}`}
-        />
       </section>
 
       <WhyIlmiBox />

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { products, whatsappLink } from "@/data/productData";
 import { useLocationPricing } from "@/hooks/useLocationPricing";
+import Reveal from "@/components/Common/Reveal";
 
 const SLIDE_DURATION = 6000;
 const MIN_SWIPE_DISTANCE = 50;
@@ -92,7 +93,7 @@ const Hero = () => {
         >
           <div className="flex flex-col-reverse gap-10 lg:flex-row lg:items-center lg:gap-8 xl:gap-32.5">
             {/* Left - copy, pricing and CTAs */}
-            <div className="w-full lg:w-1/2">
+            <Reveal immediate direction="left" delay={0.1} className="w-full lg:w-1/2">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={product.id}
@@ -176,10 +177,10 @@ const Hero = () => {
                   </div>
                 </motion.div>
               </AnimatePresence>
-            </div>
+            </Reveal>
 
             {/* Right - product image slider */}
-            <div className="animate_right w-full lg:w-1/2">
+            <Reveal immediate direction="right" delay={0.25} className="w-full lg:w-1/2">
               <div className="relative mx-auto max-w-xl rounded-[32px] border border-white/10 bg-slate-950 shadow-2xl">
                 {product.badge && (
                   <span className="absolute left-6 top-6 z-10 rounded-full bg-emerald-500 px-4 py-1 text-xs font-semibold text-white shadow-lg">
@@ -275,7 +276,7 @@ const Hero = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import Reveal from "@/components/Common/Reveal";
 import React from "react";
 import Link from "next/link";
 import { useLocationPricing } from "@/hooks/useLocationPricing";
@@ -79,23 +79,7 @@ const Contact = () => {
         <div className="relative mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             {/* Left Side - Contact Info */}
-            <motion.div
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  x: -20,
-                },
-                visible: {
-                  opacity: 1,
-                  x: 0,
-                },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="animate_left"
-            >
+            <Reveal direction="left" delay={0.1}>
               <span className="mb-6 inline-flex rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
                 Get in Touch
               </span>
@@ -204,25 +188,13 @@ const Contact = () => {
                   </a>
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
 
             {/* Right Side - Quick Order for either product */}
-            <motion.div
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  x: 20,
-                },
-                visible: {
-                  opacity: 1,
-                  x: 0,
-                },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="animate_right rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white md:p-12"
+            <Reveal
+              direction="right"
+              delay={0.2}
+              className="rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white md:p-12"
             >
               <h3 className="mb-4 text-3xl font-bold">Quick Order</h3>
 
@@ -348,7 +320,7 @@ const Contact = () => {
                   View {selected.name} details
                 </Link>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
         </div>
       </section>

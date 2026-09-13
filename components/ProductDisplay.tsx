@@ -1,9 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Minus, Plus, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLocationPricing } from '@/hooks/useLocationPricing'
 import { whatsappLink, type Product } from '@/data/productData'
+import Reveal from '@/components/Common/Reveal'
 
 interface ProductDisplayProps {
   product: Product
@@ -13,197 +16,252 @@ interface ProductDisplayProps {
   detailsHref?: string
 }
 
+const WhatsAppIcon = ({ className }: { className: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+  </svg>
+)
+
 export default function ProductDisplay({ product, sectionId, detailsHref }: ProductDisplayProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [quantity, setQuantity] = useState(1)
+  const [selectedEdition, setSelectedEdition] = useState<string | null>(
+    product.editions?.[0]?.name ?? null,
+  )
+
   const pricing = useLocationPricing(product.priceIndia, product.priceInternational, product.priceUS)
 
   const currentPrice = pricing.isIndia ? product.priceIndia : pricing.isUS ? product.priceUS : product.priceInternational
   const originalPrice = pricing.isIndia ? product.originalPriceIndia : pricing.isUS ? product.originalPriceUS : product.originalPriceInternational
   const savings = pricing.isIndia ? product.savingsIndia : pricing.isUS ? product.savingsUS : product.savingsInternational
   const currencySymbol = pricing.isIndia ? '₹' : pricing.isUS ? '$' : 'AED '
+  const format = (value: number) => (pricing.isIndia ? value.toLocaleString('en-IN') : String(value))
+  const money = (value: number) => (pricing.loading ? '...' : currencySymbol + format(value))
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % product.images.length)
-  }
+  const total = currentPrice * quantity
 
-  const prevImage = () => {
+  // The pre-filled WhatsApp message carries the shopper's exact selection.
+  const orderMessage = [
+    product.whatsappMessage,
+    '',
+    'Product: ' + product.name,
+    selectedEdition ? 'Edition: ' + selectedEdition : null,
+    'Quantity: ' + quantity,
+  ]
+    .filter((line) => line !== null)
+    .join('\n')
+
+  const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % product.images.length)
+  const prevImage = () =>
     setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length)
-  }
+
+  const filledStars = Math.round(product.rating)
 
   return (
-    <div id={sectionId ?? product.slug} className="container mx-auto lg:px-18 py-8 px-8 scroll-mt-28">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
-        {/* Left side - Image Gallery */}
-        <div className="space-y-6">
-          {/* Main Image */}
-          <div className="relative">
-            <div className="mx-auto rounded-lg overflow-hidden flex items-center justify-center">
-              <img
+    <div
+      id={sectionId ?? product.slug}
+      className="scroll-mt-28 rounded-[32px] bg-white p-5 shadow-sm sm:p-8 lg:p-10"
+    >
+      <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+        {/* ---------------- Gallery ---------------- */}
+        <Reveal direction="left">
+          <div className={`relative aspect-[4/3] overflow-hidden rounded-3xl ${product.imageBg}`}>
+            {product.badge && (
+              <span className="absolute left-4 top-4 z-10 rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
+                {product.badge}
+              </span>
+            )}
+
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.img
+                key={currentImageIndex}
                 src={product.images[currentImageIndex]}
-                alt={product.name}
-                className="object-contain"
-                style={{ maxWidth: '500px', maxHeight: '500px' }}
+                alt={product.name + ' - image ' + (currentImageIndex + 1)}
+                className="h-full w-full object-cover"
+                initial={{ opacity: 0, scale: 1.02 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
               />
-            </div>
-            
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevImage}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-colors"
-              aria-label="Previous image"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md transition-colors"
-              aria-label="Next image"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+            </AnimatePresence>
+
+            {product.images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={prevImage}
+                  aria-label="Previous image"
+                  className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow transition hover:bg-white"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextImage}
+                  aria-label="Next image"
+                  className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow transition hover:bg-white"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </>
+            )}
           </div>
 
-          {/* Thumbnail Images */}
+          {/* Thumbnails */}
           <div
-            className="grid gap-2"
+            className="mt-4 grid gap-3"
             style={{ gridTemplateColumns: `repeat(${Math.min(product.images.length, 5)}, minmax(0, 1fr))` }}
           >
-            {product.images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                  currentImageIndex === index
-                    ? 'border-green-500 scale-105'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <img
-                  src={image}
-                  alt={`${product.name} - Image ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
+            {product.images.map((image, index) => {
+              const isActive = currentImageIndex === index
+              return (
+                <button
+                  key={image}
+                  type="button"
+                  onClick={() => setCurrentImageIndex(index)}
+                  aria-label={'Show image ' + (index + 1)}
+                  aria-current={isActive}
+                  className={`aspect-square overflow-hidden rounded-2xl ${product.imageBg} ring-2 ring-offset-2 transition ${
+                    isActive ? 'ring-slate-900' : 'ring-transparent hover:ring-slate-300'
+                  }`}
+                >
+                  <img src={image} alt="" className="h-full w-full object-cover" />
+                </button>
+              )
+            })}
           </div>
-        </div>
+        </Reveal>
 
-        {/* Right side - Product Details */}
-        <div className="space-y-6">
-          {/* Product Title */}
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-            <p className="mt-2 text-lg text-gray-500">{product.tagline}</p>
+        {/* ---------------- Details ---------------- */}
+        <Reveal direction="right" delay={0.1} className="flex flex-col">
+          <h2 className="text-4xl font-black uppercase leading-[0.95] tracking-tight text-slate-900 sm:text-5xl">
+            {product.name}
+          </h2>
+          <p className="mt-3 text-sm text-slate-500">SKU: {product.sku}</p>
+
+          {/* Price + rating */}
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <div className="flex items-baseline gap-3">
+              <span className="text-4xl font-extrabold text-red-600">{money(currentPrice)}</span>
+              {!pricing.loading && (
+                <span className="text-lg text-slate-400 line-through">{money(originalPrice)}</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5" aria-label={product.rating + ' out of 5 stars'}>
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${
+                      i < filledStars ? 'fill-amber-400 text-amber-400' : 'fill-slate-200 text-slate-200'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-sm text-slate-500">({product.reviewCount} reviews)</span>
+            </div>
+          </div>
+          {!pricing.loading && (
+            <p className="mt-2 text-sm font-semibold text-emerald-600">You save {money(savings)}</p>
+          )}
+
+          {/* Edition picker */}
+          {product.editions && product.editions.length > 0 && (
+            <div className="mt-7">
+              <p className="text-sm font-semibold text-slate-900">Edition</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {product.editions.map((edition) => {
+                  const isSelected = selectedEdition === edition.name
+                  return (
+                    <button
+                      key={edition.name}
+                      type="button"
+                      onClick={() => setSelectedEdition(edition.name)}
+                      aria-pressed={isSelected}
+                      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                        isSelected
+                          ? 'border-slate-900 bg-slate-900 text-white'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
+                      }`}
+                    >
+                      {edition.name}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Quantity + CTA */}
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <div className="inline-flex items-center rounded-full border border-slate-200">
+              <button
+                type="button"
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                aria-label="Decrease quantity"
+                className="flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100"
+              >
+                <Minus className="h-4 w-4" />
+              </button>
+              <span className="w-10 text-center font-semibold tabular-nums text-slate-900">
+                {String(quantity).padStart(2, '0')}
+              </span>
+              <button
+                type="button"
+                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                aria-label="Increase quantity"
+                className="flex h-12 w-12 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-100"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
+
+            <a
+              href={whatsappLink(orderMessage)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-w-[220px] flex-1 items-center justify-center gap-2 rounded-full bg-yellow-400 px-6 py-3.5 font-bold text-slate-900 transition hover:bg-yellow-300"
+            >
+              <WhatsAppIcon className="h-5 w-5" />
+              <span>Order on WhatsApp · {money(total)}</span>
+            </a>
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500">
+            <span>✓ Pay on Delivery</span>
+            <span>✓ 14-day return &amp; exchange</span>
+            <span>✓ Delivered in 5–7 days</span>
           </div>
 
           {/* Description */}
-          <p className="text-gray-600 leading-relaxed">
-            {product.description}
-          </p>
+          <div className="mt-8">
+            <h3 className="text-sm font-semibold text-slate-900">Product description</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{product.description}</p>
+          </div>
 
-          {/* Editions */}
-          {product.editions && product.editions.length > 0 && (
-            <div className="space-y-3">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-                Choose your edition
-              </h2>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {product.editions.map((edition) => (
-                  <div
-                    key={edition.name}
-                    className="rounded-xl border border-gray-200 p-4 transition-colors hover:border-green-400"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span className={`h-3 w-3 rounded-full ${edition.accent}`} />
-                      <span className="font-semibold text-gray-900">{edition.name}</span>
-                    </div>
-                    <p className="mt-2 text-sm leading-6 text-gray-600">
-                      {edition.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Features */}
-          <div className="space-y-3">
-            {product.features.map((feature, index) => (
-              <div key={index} className="flex items-center space-x-3">
-                <div className="flex-shrink-0">
-                  <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
+          {/* Details */}
+          <div className="mt-6">
+            <h3 className="text-sm font-semibold text-slate-900">Product details</h3>
+            <dl className="mt-2 divide-y divide-slate-100">
+              {product.details.map((detail) => (
+                <div key={detail.label} className="flex items-baseline justify-between gap-6 py-2.5 text-sm">
+                  <dt className="shrink-0 text-slate-500">{detail.label}</dt>
+                  <dd className="text-right font-medium text-slate-800">{detail.value}</dd>
                 </div>
-                <span className="text-gray-700">{feature}</span>
-              </div>
-            ))}
+              ))}
+            </dl>
           </div>
 
-          {/* Pricing */}
-          <div className="bg-gray-50 rounded-lg p-6 space-y-3">
-            <div className="flex items-baseline space-x-2">
-              <span className="text-3xl font-bold text-green-600">
-                {currencySymbol}{pricing.isIndia ? currentPrice.toLocaleString('en-IN') : currentPrice}
-              </span>
-              <span className="text-lg text-gray-400 line-through">
-                {currencySymbol}{pricing.isIndia ? originalPrice.toLocaleString('en-IN') : originalPrice}
-              </span>
-            </div>
-            <div className="text-green-600 font-medium">
-              You Save: {currencySymbol}{pricing.isIndia ? savings.toLocaleString('en-IN') : savings}
-            </div>
-          </div>
-
-          {/* Additional Info */}
-          <div className="space-y-2 text-sm text-gray-600">
-            <div className="flex items-center space-x-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Pay on Delivery available</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Easy 14 days return & exchange available</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Usually delivered in 5-7 days</span>
-            </div>
-          </div>
-
-          {/* CTA Button */}
-          <a 
-            href={whatsappLink(product.whatsappMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            <span>Order Now on WhatsApp</span>
-          </a>
-
-          {/* Link to the dedicated product page */}
           {detailsHref && (
             <Link
               href={detailsHref}
-              className="block w-full rounded-lg border border-gray-300 py-4 px-6 text-center font-semibold text-gray-900 transition-colors duration-200 hover:border-gray-900"
+              className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-slate-900 underline-offset-4 hover:underline"
             >
-              View Full Details
+              View full details
+              <ChevronRight className="h-4 w-4" />
             </Link>
           )}
-        </div>
+        </Reveal>
       </div>
     </div>
   )
