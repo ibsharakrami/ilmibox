@@ -1,4 +1,6 @@
 "use client";
+import { useState } from "react";
+import { Volume2, Sparkles, ShieldCheck } from "lucide-react";
 import Reveal from "@/components/Common/Reveal";
 import Link from "next/link";
 import ProductDisplay from "@/components/ProductDisplay";
@@ -6,6 +8,18 @@ import OrderSteps from "@/components/OrderSteps";
 import { whatsappLink, type Product } from "@/data/productData";
 
 const ProductPage = ({ product }: { product: Product }) => {
+  const [selectedEdition, setSelectedEdition] = useState<string | null>(
+    product.editions?.[0]?.name ?? null,
+  );
+
+  // Reciters without an `editions` list are featured on every edition.
+  const visibleReciters = (product.reciters ?? []).filter(
+    (reciter) =>
+      !reciter.editions ||
+      !selectedEdition ||
+      reciter.editions.includes(selectedEdition),
+  );
+
   return (
     <main>
       {/* Hero */}
@@ -45,7 +59,11 @@ const ProductPage = ({ product }: { product: Product }) => {
       {/* Gallery + details + pricing */}
       <section className="bg-slate-100 py-12 lg:py-16">
         <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-          <ProductDisplay product={product} />
+          <ProductDisplay
+            product={product}
+            selectedEdition={selectedEdition}
+            onEditionChange={setSelectedEdition}
+          />
         </div>
       </section>
 
@@ -115,6 +133,99 @@ const ProductPage = ({ product }: { product: Product }) => {
         </section>
       )}
 
+      {/* Reciters */}
+      {visibleReciters.length > 0 && (
+        <section className="bg-slate-50 py-20">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <Reveal direction="up" className="mx-auto mb-12 max-w-2xl text-center">
+              <span className="inline-flex rounded-full bg-emerald-100 px-4 py-1 text-sm font-semibold text-emerald-700">
+                Recitation
+              </span>
+              <h2 className="mt-6 text-3xl font-bold text-slate-900 sm:text-4xl">
+                Voices Your Family Already Knows
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                {selectedEdition
+                  ? `Recitation featured on the ${selectedEdition}.`
+                  : "Recitation by these renowned Qaris."}
+              </p>
+            </Reveal>
+
+            <div
+              className={`grid gap-6 ${
+                visibleReciters.length > 2 ? "md:grid-cols-3" : "md:grid-cols-2"
+              }`}
+            >
+              {visibleReciters.map((reciter, index) => (
+                <Reveal
+                  key={reciter.name}
+                  direction="up"
+                  delay={0.1 * index}
+                  className="rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+                    <Volume2 className="h-6 w-6" />
+                  </div>
+                  <span className="mt-6 block text-xs font-semibold uppercase tracking-widest text-slate-400">
+                    {reciter.origin}
+                  </span>
+                  <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                    {reciter.name}
+                  </h3>
+                  <p className="mt-3 leading-7 text-slate-600">
+                    {reciter.description}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* How to use */}
+      {product.setup && product.setup.length > 0 && (
+        <section className="bg-white py-20">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <Reveal direction="up" className="mx-auto mb-12 max-w-2xl text-center">
+              <span className="inline-flex rounded-full bg-sky-100 px-4 py-1 text-sm font-semibold text-sky-700">
+                Getting Started
+              </span>
+              <h2 className="mt-6 text-3xl font-bold text-slate-900 sm:text-4xl">
+                Set It Up in Minutes
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                Everything you need to know, straight from the printed user guide
+                in the box.
+              </p>
+            </Reveal>
+
+            <ol className="grid gap-6 md:grid-cols-2">
+              {product.setup.map((step, index) => (
+                <Reveal
+                  as="li"
+                  key={step.title}
+                  direction="up"
+                  delay={0.08 * index}
+                  className="flex gap-5 rounded-[28px] border border-slate-200 bg-slate-50 p-7"
+                >
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-900 font-semibold text-white">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 leading-7 text-slate-600">
+                      {step.description}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
       {/* What's in the box */}
       <section className="bg-slate-900 py-20">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
@@ -172,6 +283,66 @@ const ProductPage = ({ product }: { product: Product }) => {
           </div>
         </div>
       </section>
+
+      {/* Care and safety */}
+      {Boolean(product.careNotes?.length || product.safetyNotes?.length) && (
+        <section className="bg-white py-20">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="grid gap-6 md:grid-cols-2">
+              {product.careNotes && product.careNotes.length > 0 && (
+                <Reveal
+                  direction="left"
+                  className="rounded-[28px] border border-slate-200 bg-slate-50 p-8"
+                >
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
+                    <Sparkles className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-semibold text-slate-900">
+                    Care Instructions
+                  </h3>
+                  <ul className="mt-4 space-y-2.5">
+                    {product.careNotes.map((note) => (
+                      <li
+                        key={note}
+                        className="flex gap-3 leading-7 text-slate-600"
+                      >
+                        <span className="mt-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-sky-500" />
+                        {note}
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              )}
+
+              {product.safetyNotes && product.safetyNotes.length > 0 && (
+                <Reveal
+                  direction="right"
+                  delay={0.1}
+                  className="rounded-[28px] border border-slate-200 bg-slate-50 p-8"
+                >
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-amber-700">
+                    <ShieldCheck className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-semibold text-slate-900">
+                    Safety Information
+                  </h3>
+                  <ul className="mt-4 space-y-2.5">
+                    {product.safetyNotes.map((note) => (
+                      <li
+                        key={note}
+                        className="flex gap-3 leading-7 text-slate-600"
+                      >
+                        <span className="mt-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-500" />
+                        {note}
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       <OrderSteps productName={product.name} />
     </main>

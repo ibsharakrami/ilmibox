@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Minus, Plus, Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Minus, Plus, Star, ChevronLeft, ChevronRight, Volume2 } from 'lucide-react'
 import { useLocationPricing } from '@/hooks/useLocationPricing'
 import { whatsappLink, type Product } from '@/data/productData'
 import Reveal from '@/components/Common/Reveal'
@@ -14,6 +14,13 @@ interface ProductDisplayProps {
   sectionId?: string
   /** When set, renders a secondary link to the product's own page. */
   detailsHref?: string
+  /**
+   * Controlled edition selection. Pass both of these to let a parent react to
+   * the choice (the product page uses it to filter the reciters). When left
+   * out, the component keeps the selection in its own state.
+   */
+  selectedEdition?: string | null
+  onEditionChange?: (edition: string) => void
 }
 
 const WhatsAppIcon = ({ className }: { className: string }) => (
@@ -22,12 +29,31 @@ const WhatsAppIcon = ({ className }: { className: string }) => (
   </svg>
 )
 
-export default function ProductDisplay({ product, sectionId, detailsHref }: ProductDisplayProps) {
+export default function ProductDisplay({
+  product,
+  sectionId,
+  detailsHref,
+  selectedEdition: controlledEdition,
+  onEditionChange,
+}: ProductDisplayProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
-  const [selectedEdition, setSelectedEdition] = useState<string | null>(
+  const [internalEdition, setInternalEdition] = useState<string | null>(
     product.editions?.[0]?.name ?? null,
   )
+
+  const selectedEdition =
+    controlledEdition !== undefined ? controlledEdition : internalEdition
+
+  /** Picking an edition also jumps the gallery to that edition's photo. */
+  const selectEdition = (name: string) => {
+    setInternalEdition(name)
+    onEditionChange?.(name)
+
+    const edition = product.editions?.find((item) => item.name === name)
+    const imageIndex = edition ? product.images.indexOf(edition.image) : -1
+    if (imageIndex >= 0) setCurrentImageIndex(imageIndex)
+  }
 
   const pricing = useLocationPricing(product.priceIndia, product.priceInternational, product.priceUS)
 
@@ -56,6 +82,17 @@ export default function ProductDisplay({ product, sectionId, detailsHref }: Prod
     setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length)
 
   const filledStars = Math.round(product.rating)
+
+  const selectedEditionData =
+    product.editions?.find((edition) => edition.name === selectedEdition) ?? null
+
+  // Reciters without an `editions` list are featured on every edition.
+  const editionReciters = (product.reciters ?? []).filter(
+    (reciter) =>
+      !reciter.editions ||
+      !selectedEdition ||
+      reciter.editions.includes(selectedEdition),
+  )
 
   return (
     <div
@@ -176,7 +213,7 @@ export default function ProductDisplay({ product, sectionId, detailsHref }: Prod
                     <button
                       key={edition.name}
                       type="button"
-                      onClick={() => setSelectedEdition(edition.name)}
+                      onClick={() => selectEdition(edition.name)}
                       aria-pressed={isSelected}
                       className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                         isSelected
@@ -189,6 +226,45 @@ export default function ProductDisplay({ product, sectionId, detailsHref }: Prod
                   )
                 })}
               </div>
+            </div>
+          )}
+
+          {/* What the chosen edition includes */}
+          {(selectedEditionData || editionReciters.length > 0) && (
+            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+              {selectedEditionData && (
+                <p className="text-sm leading-6 text-slate-600">
+                  {selectedEditionData.description}
+                </p>
+              )}
+
+              {editionReciters.length > 0 && (
+                <>
+                  <p
+                    className={`text-sm font-semibold text-slate-900 ${
+                      selectedEditionData ? 'mt-4' : ''
+                    }`}
+                  >
+                    Recitation on this edition
+                  </p>
+                  <ul className="mt-3 space-y-2.5">
+                    {editionReciters.map((reciter) => (
+                      <li key={reciter.name} className="flex items-start gap-3">
+                        <span className="mt-0.5 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
+                          <Volume2 className="h-4 w-4" />
+                        </span>
+                        <span className="text-sm leading-6 text-slate-600">
+                          <span className="font-semibold text-slate-900">
+                            {reciter.name}
+                          </span>
+                          {' \u00b7 '}
+                          {reciter.origin}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           )}
 

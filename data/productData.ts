@@ -15,6 +15,23 @@ export type ProductDetail = {
   value: string
 }
 
+export type ProductReciter = {
+  name: string
+  /** Where the reciter is best known from, e.g. "Makkah". */
+  origin: string
+  description: string
+  /**
+   * Edition names this reciter is featured on. Omit to show the reciter
+   * for every edition.
+   */
+  editions?: string[]
+}
+
+export type ProductSetupStep = {
+  title: string
+  description: string
+}
+
 export type Product = {
   id: string
   slug: string
@@ -53,6 +70,13 @@ export type Product = {
   highlights: ProductHighlight[]
   inTheBox: string[]
   editions?: ProductEdition[]
+  /** Reciters featured on the device (from the printed user guide). */
+  reciters?: ProductReciter[]
+  /** "How to start" steps, mirroring the printed user guide. */
+  setup?: ProductSetupStep[]
+  /** Care and safety notes from the printed user guide. */
+  careNotes?: string[]
+  safetyNotes?: string[]
 }
 
 export const WHATSAPP_NUMBER = '971524569983'
@@ -103,12 +127,12 @@ export const laptopProduct: Product = {
     'Encourages islamic learning',
   ],
   images: [
-    '/images/deen/product.jpg',
-    '/images/deen/product2.jpg',
-    '/images/deen/product3.jpg',
     '/images/deen/product4.png',
+    '/images/deen/product3.jpg',
+    '/images/deen/product2.jpg',
+    '/images/deen/product.jpg',
   ],
-  cardImage: '/images/deen/product.jpg',
+  cardImage: '/images/deen/product4.png',
   whatsappMessage:
     'Hi, I saw the Yamani Islamic Learning Laptop for Kids with 50+ activities.\n\nI would like to place an order. Is it available for delivery?\n\nPlease assist. Thank you!',
   highlights: [
@@ -141,7 +165,7 @@ export const quranAudioMagnet: Product = {
   shortDescription:
     'A slim magnetic Quran speaker for your fridge or any metal surface — available in Makkah and Madinah editions.',
   description:
-    'The Quran Audio Magnet turns any fridge, door or metal surface into a place of remembrance. Slim, elegant and beautifully finished with imagery of the Haramain, it plays the Quran at the touch of a button — so recitation flows through your home all day long. Choose the Makkah Edition or the Madinah Edition, each arriving in a premium gift box.',
+    'The Quran Audio Magnet turns any fridge, door or metal surface into a place of remembrance. It holds all 114 Surahs of the Holy Quran, plus Morning Adhkar, Evening Adhkar and Ruqyah Shariyah, recited by Sheikh Saud Ash-Shuraim, Sheikh Ali Al-Hudhaify and Sheikh Mishary Rashid Alafasy. Press a Surah number on the remote and recitation begins straight away. Switch to Bluetooth mode and it becomes a speaker for your own audio. Choose the Makkah Edition or the Madinah Edition, each arriving in a premium gift box.',
   badge: 'New Arrival',
   sku: 'ILMI-QAM-002',
   rating: 4.9,
@@ -149,9 +173,18 @@ export const quranAudioMagnet: Product = {
   imageBg: 'bg-emerald-100',
   details: [
     { label: 'Editions', value: 'Makkah Edition, Madinah Edition' },
-    { label: 'Mount', value: 'Strong built-in magnet — fridge or any metal surface' },
-    { label: 'Power', value: 'Rechargeable (charging cable included)' },
-    { label: 'Perfect for', value: 'Kitchen, office, gifting, a new home' },
+    {
+      label: 'Audio content',
+      value: 'All 114 Surahs, plus Morning Adhkar, Evening Adhkar and Ruqyah Shariyah',
+    },
+    { label: 'Connectivity', value: 'Bluetooth' },
+    { label: 'Charging port', value: 'USB Type-C' },
+    { label: 'Power source', value: 'Rechargeable battery' },
+    { label: 'Controls', value: 'Remote control and touch panel' },
+    { label: 'Sleep timer', value: '30 or 60 minutes' },
+    { label: 'Product size', value: '10 × 10 cm' },
+    { label: 'Mount', value: 'Strong magnetic back, desk stand included' },
+    { label: 'Brand', value: 'ilmiBox' },
   ],
   // India pricing
   priceIndia: 4500,
@@ -166,12 +199,15 @@ export const quranAudioMagnet: Product = {
   originalPriceInternational: 245,
   savingsInternational: 60,
   features: [
-    'Complete Quran audio in a slim magnetic speaker',
+    'All 114 Surahs of the Holy Quran in one slim magnetic speaker',
+    'Morning Adhkar, Evening Adhkar and Ruqyah Shariyah included',
+    'Recited by Sheikh Saud Ash-Shuraim, Sheikh Ali Al-Hudhaify and Sheikh Mishary Rashid Alafasy',
+    'Remote control — press a Surah number and recitation starts straight away',
+    'Bluetooth mode turns it into a speaker for your own audio',
+    '30 and 60 minute sleep timers for bedtime listening',
+    'Strong magnetic back for the fridge, with a desk stand in the box',
+    'USB-C rechargeable, no batteries to replace',
     'Two editions: Makkah (Kaaba) and Madinah (Green Dome)',
-    'Strong built-in magnet — sticks to any fridge or metal surface',
-    'Clear, room-filling sound with renowned reciters',
-    'Rechargeable and fully portable',
-    'Arrives in a premium gift box — perfect for gifting',
   ],
   images: [
     '/images/deen/magnet/ilm1.jpeg', // Makkah Edition magnet
@@ -185,9 +221,9 @@ export const quranAudioMagnet: Product = {
     'Hi, I saw the Quran Audio Magnet (A Quran Companion for Every Home).\n\nI would like to place an order. Please share the available editions and delivery details.\n\nThank you!',
   highlights: [
     {
-      title: 'Quran in Every Room',
+      title: 'The Whole Quran, One Tap Away',
       description:
-        'Place it on the fridge, the kitchen door or the office cabinet — recitation is always one tap away.',
+        'All 114 Surahs plus Morning and Evening Adhkar and Ruqyah Shariyah. Press a number on the remote and recitation begins.',
     },
     {
       title: 'Haramain Artwork',
@@ -195,32 +231,100 @@ export const quranAudioMagnet: Product = {
         'High-definition Makkah and Madinah imagery with a protective glossy finish that stays beautiful for years.',
     },
     {
-      title: 'Gift-Ready Packaging',
+      title: 'A Speaker Too',
       description:
-        'Each magnet ships in a window gift box, making it a thoughtful gift for Eid, Nikkah or a new home.',
+        'Switch to Bluetooth mode to play your own audio, and set a 30 or 60 minute sleep timer for bedtime.',
     },
   ],
   inTheBox: [
     '1x Quran Audio Magnet (Makkah or Madinah Edition)',
-    'Premium window gift box',
-    'Charging cable',
-    'Quick start guide',
+    'Remote control',
+    'USB-C charging cable',
+    'Desk stand',
+    'User guide',
+    'Premium gift box',
   ],
   editions: [
     {
       name: 'Makkah Edition',
       description:
-        'The door of the Kaaba in rich black and gold — a striking centrepiece for any home.',
+        'Inspired by the beauty and spiritual atmosphere of the Holy Kaabah, the Makkah Edition features a luxurious design to bring the beautiful recitation of the Quran into your home.',
       image: '/images/deen/magnet/ilm1.jpeg',
       accent: 'bg-slate-900',
     },
     {
       name: 'Madinah Edition',
       description:
-        'The Green Dome of Masjid an-Nabawi, captured in calm emerald tones.',
+        'Inspired by the peaceful atmosphere of Al-Masjid an-Nabawi, the Madinah Edition is designed to create a calm and spiritual environment in every home.',
       image: '/images/deen/magnet/ilm2.jpeg',
       accent: 'bg-emerald-700',
     },
+  ],
+  reciters: [
+    {
+      name: 'Sheikh Saud Ash-Shuraim',
+      origin: 'Makkah',
+      description:
+        'Known for his powerful and emotional Quran recitation from Makkah.',
+      editions: ['Makkah Edition'],
+    },
+    {
+      name: 'Sheikh Ali Al-Hudhaify',
+      origin: 'Madinah',
+      description:
+        'Recognised for his calm, clear and beautiful recitation from Madinah.',
+      editions: ['Madinah Edition'],
+    },
+    {
+      name: 'Sheikh Mishary Rashid Alafasy',
+      origin: 'Worldwide',
+      description:
+        'Internationally renowned for his Quran recitation, Adhkar and Islamic audio recordings.',
+    },
+  ],
+  setup: [
+    {
+      title: 'Charge it first',
+      description:
+        'Connect the included USB-C cable to a power adapter or computer and charge fully before the first use. A red light shows it is charging and turns off once the battery is full.',
+    },
+    {
+      title: 'Switch it on',
+      description:
+        'Slide the power switch on the side of the device. Audio playback is ready straight away.',
+    },
+    {
+      title: 'Play the Quran',
+      description:
+        'Tap the front panel to play or pause. On the remote, press a number from 1 to 114 to jump to any Surah, or 115, 116 and 117 for Morning Adhkar, Evening Adhkar and Ruqyah Shariyah.',
+    },
+    {
+      title: 'Adjust as you listen',
+      description:
+        'Use the remote to change the volume, repeat a Surah, skip to the next or previous one, or set a 30 or 60 minute sleep timer.',
+    },
+    {
+      title: 'Connect by Bluetooth',
+      description:
+        'Press Mode to switch to Bluetooth, then pair from your phone with "Ilmibox Quran MP3" to play your own audio through the speaker.',
+    },
+    {
+      title: 'Put it where you pray and gather',
+      description:
+        'The magnetic back holds it on a fridge or any metal surface. Use the included desk stand for shelves, office desks and study spaces.',
+    },
+  ],
+  careNotes: [
+    'Keep away from water and excessive heat.',
+    'Clean using a soft dry cloth.',
+    'Do not use chemical cleaners.',
+    'Avoid dropping the device.',
+  ],
+  safetyNotes: [
+    'Keep out of reach of small children.',
+    'Do not attempt to open the device.',
+    'Use only compatible charging adapters.',
+    'Use standard 5V USB charging only.',
   ],
 }
 
