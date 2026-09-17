@@ -6,7 +6,7 @@ import Reveal from "@/components/Common/Reveal";
 import { products, whatsappLink } from "@/data/productData";
 
 const exploreLinks = [
-  { title: "Features", href: "/#features" },
+  { title: "Features", href: "/products/yamani-islamic-learning-laptop#features" },
   { title: "Products", href: "/#products" },
   { title: "Why ilmiBox", href: "/#why" },
   { title: "How to Order", href: "/#how-to-order" },
@@ -67,8 +67,8 @@ const Footer = () => {
                 src="/images/deen/logo.png"
                 alt="ilmiBox logo"
                 width={160}
-                height={64}
-                className="h-14 w-auto"
+                height={30}
+                className="h-10 w-auto"
               />
             </Link>
             <p className="mt-5 max-w-sm leading-7 text-slate-400">

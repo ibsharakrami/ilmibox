@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Minus, Plus, Star, ChevronLeft, ChevronRight, Volume2 } from 'lucide-react'
+import { Minus, Plus, ChevronLeft, ChevronRight, Volume2 } from 'lucide-react'
 import { useLocationPricing } from '@/hooks/useLocationPricing'
 import { whatsappLink, type Product } from '@/data/productData'
 import Reveal from '@/components/Common/Reveal'
@@ -81,7 +81,6 @@ export default function ProductDisplay({
   const prevImage = () =>
     setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length)
 
-  const filledStars = Math.round(product.rating)
 
   const selectedEditionData =
     product.editions?.find((edition) => edition.name === selectedEdition) ?? null
@@ -176,27 +175,12 @@ export default function ProductDisplay({
           </h2>
           <p className="mt-3 text-sm text-slate-500">SKU: {product.sku}</p>
 
-          {/* Price + rating */}
-          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <div className="flex items-baseline gap-3">
-              <span className="text-4xl font-extrabold text-red-600">{money(currentPrice)}</span>
-              {!pricing.loading && (
-                <span className="text-lg text-slate-400 line-through">{money(originalPrice)}</span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-0.5" aria-label={product.rating + ' out of 5 stars'}>
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star
-                    key={i}
-                    className={`h-4 w-4 ${
-                      i < filledStars ? 'fill-amber-400 text-amber-400' : 'fill-slate-200 text-slate-200'
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="text-sm text-slate-500">({product.reviewCount} reviews)</span>
-            </div>
+          {/* Price */}
+          <div className="mt-5 flex flex-wrap items-baseline gap-3">
+            <span className="text-4xl font-extrabold text-red-600">{money(currentPrice)}</span>
+            {!pricing.loading && (
+              <span className="text-lg text-slate-400 line-through">{money(originalPrice)}</span>
+            )}
           </div>
           {!pricing.loading && (
             <p className="mt-2 text-sm font-semibold text-emerald-600">You save {money(savings)}</p>

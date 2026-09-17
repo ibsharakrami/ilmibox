@@ -5,7 +5,8 @@ import Reveal from "@/components/Common/Reveal";
 import Link from "next/link";
 import ProductDisplay from "@/components/ProductDisplay";
 import OrderSteps from "@/components/OrderSteps";
-import { whatsappLink, type Product } from "@/data/productData";
+import Feature from "@/components/Features";
+import { laptopProduct, whatsappLink, type Product } from "@/data/productData";
 
 const ProductPage = ({ product }: { product: Product }) => {
   const [selectedEdition, setSelectedEdition] = useState<string | null>(
@@ -89,6 +90,9 @@ const ProductPage = ({ product }: { product: Product }) => {
           </div>
         </div>
       </section>
+
+      {/* Learning activities (laptop only) */}
+      {product.slug === laptopProduct.slug && <Feature />}
 
       {/* Editions */}
       {product.editions && product.editions.length > 0 && (

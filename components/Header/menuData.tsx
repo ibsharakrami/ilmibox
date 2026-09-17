@@ -5,25 +5,27 @@ const menuData: Menu[] = [
     id: 2,
     title: "Features",
     newTab: false,
-    path: "/#features",
+    path: "/products/yamani-islamic-learning-laptop#features",
   },
   {
     id: 3,
     title: "Products",
     newTab: false,
     path: "/#products",
-  },
-  {
-    id: 4,
-    title: "Yamani Laptop",
-    newTab: false,
-    path: "/products/yamani-islamic-learning-laptop",
-  },
-  {
-    id: 5,
-    title: "Quran Audio Magnet",
-    newTab: false,
-    path: "/products/quran-audio-magnet",
+    submenu: [
+      {
+        id: 31,
+        title: "Yamani Laptop",
+        newTab: false,
+        path: "/products/yamani-islamic-learning-laptop",
+      },
+      {
+        id: 32,
+        title: "Quran Audio Magnet",
+        newTab: false,
+        path: "/products/quran-audio-magnet",
+      },
+    ],
   },
   {
     id: 6,
